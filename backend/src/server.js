@@ -8,6 +8,8 @@ import { ENV } from "./config/env.js";
 
 import { connectDB } from "./config/db.js";
 
+import adminRoutes from "./routes/admin.route.js";
+
 import dns from "dns";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
@@ -20,6 +22,8 @@ app.use(express.json());
 app.use(clerkMiddleware());
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
+
+app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({ message: "OK" });
