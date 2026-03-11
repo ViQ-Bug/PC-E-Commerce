@@ -22,6 +22,6 @@ router.put("/products/:id", upload.array("images", 3), updateProduct);
 router.get("/orders", getAllOders);
 router.patch("/orders/:orderId/status", updateOrderStatus);
 //PATHCH: update 1 field
-router.get("/custormers", getAllCustomers);
+router.get("/customers", getAllCustomers);
 router.get("/stats", getDashboardStats);
 export default router;
