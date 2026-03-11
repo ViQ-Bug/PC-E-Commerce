@@ -6,6 +6,10 @@ export async function addAddress(req, res) {
 
     const user = req.user;
 
+    if (!fullName || !streetAddress || !city || !phoneNumber) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     if (isDefault) {
       user.addAddress.forEach((addr) => addr.isDefault == false);
     }
@@ -108,7 +112,7 @@ export async function removeFormWishlist(req, res) {
     const user = req.user;
 
     if (!user.wishlist.includes(productId)) {
-      return res.status(400).json({ message: "Product is not in wishlist" });
+      return res.status(400).json({ message: "Product not found in wishlist" });
     }
 
     user.wishlist.pull(productId);
@@ -124,7 +128,7 @@ export async function removeFormWishlist(req, res) {
 }
 export async function getWishlist(req, res) {
   try {
-    const user = req.user;
+    const user = await User.findById(req.user._id).populate("wishlist"); //req.user;
     res.status(200).json({ wishlist: user.wishlist });
   } catch (error) {
     console.error("Error getting wishlist:", error);
