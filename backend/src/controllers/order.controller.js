@@ -41,6 +41,7 @@ export async function createOrder(req, res) {
         $inc: { stock: -item.quantity },
       });
     }
+
     res.status(201).json({ message: "Order created successfully", order });
   } catch (error) {
     console.error("Error creating order:", error);
@@ -53,14 +54,17 @@ export async function getUserOrder(req, res) {
       .populate("orderItems.product")
       .sort({ createdAt: -1 });
 
+    const orderIds = orders.map((order) => order._id);
+    const reviews = await Review.find({ orderId: { $in: orderIds } });
+    const reviewedOrderIds = new Set(
+      reviews.map((review) => review.orderId.toString()),
+    );
+
     const orderWithReviewStatus = await Promise.all(
       orders.map(async (order) => {
-        const review = await Review.findOne({
-          orderId: order._id,
-        });
         return {
           ...order.toObject(),
-          hasReview: !!review,
+          hasReview: reviewedOrderIds.has(order._id.toString()),
         };
       }),
     );
