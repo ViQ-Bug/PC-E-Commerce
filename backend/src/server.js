@@ -13,7 +13,9 @@ import userRoutes from "./routes/user.route.js";
 import orderRoutes from "./routes/order.route.js";
 import reviewRoutes from "./routes/review.route.js";
 import productRoutes from "./routes/product.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
+import cors from "cors";
 import dns from "dns";
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
@@ -24,6 +26,7 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(clerkMiddleware());
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
@@ -32,6 +35,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({ message: "OK" });
