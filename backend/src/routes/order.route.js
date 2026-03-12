@@ -4,9 +4,7 @@ import { protectRoute } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.use(protectRoute);
-
-router.post("/", createOrder);
-router.get("/", getUserOrder);
+router.post("/", protectRoute, createOrder);
+router.get("/", protectRoute, getUserOrder);
 
 export default router;
