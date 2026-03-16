@@ -26,7 +26,7 @@ function Sidebar() {
             </span>
           </div>
         </div>
-        <ul className="menu w-full grow flex flex-col gap-2">
+        <ul className="menu w-full grow flex flex-col gap-3">
           {NAVIGATION.map((item) => {
             const isActive = location.pathname === item.path;
             return (

@@ -24,9 +24,9 @@ export const getOrderStatusBadge = (status) => {
 };
 
 export const getStockStatusBadge = (stock) => {
-  if (stock === 0) return { text: "Hết hàng", color: "badge-error" };
-  if (stock < 20) return { text: "Thiếu hàng", color: "badge-warning" };
-  return { text: "Còn hàng", color: "badge-success" };
+  if (stock === 0) return { text: "Hết hàng", class: "badge-error" };
+  if (stock < 20) return { text: "Ít hàng", class: "badge-warning" };
+  return { text: "Còn hàng", class: "badge-success" };
 };
 
 export const formateDate = (dateString) => {
