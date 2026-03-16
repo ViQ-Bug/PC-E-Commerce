@@ -44,8 +44,7 @@ export async function createProduct(req, res) {
 export async function getAllProducts(_, res) {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
-    // res.status(200).json(products);
-    res.json({ test: "ok" });
+    res.status(200).json(products);
   } catch (error) {
     console.error("Error getting products:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -88,6 +87,16 @@ export async function updateProduct(req, res) {
     res.status(200).json(product);
   } catch (error) {
     console.error("Error updating product:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+export async function deleteProduct(req, res) {
+  try {
+    const { id } = req.params;
+    await Product.findByIdAndDelete(id);
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
