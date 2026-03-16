@@ -35,7 +35,7 @@ function DashboardPage() {
       name: "Tổng doanh thu",
       value: statsLoading
         ? "..."
-        : `${formatCurrency(statsData.totalRevenue.toFixed(2)) || 0}`,
+        : `${formatCurrency(statsData?.totalRevenue?.toFixed(2)) || 0}`,
       icon: <CircleDollarSignIcon className="size-8" />,
     },
     {

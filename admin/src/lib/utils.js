@@ -6,6 +6,7 @@ export const formatCurrency = (amount) => {
 };
 
 export const capitalizeText = (text) => {
+  if (!text) return text;
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
@@ -29,7 +30,10 @@ export const getStockStatusBadge = (stock) => {
 };
 
 export const formateDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString("vi-VN", {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("vi-VN", {
     month: "short",
     day: "numeric",
     year: "numeric",
