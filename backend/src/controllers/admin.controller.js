@@ -90,7 +90,7 @@ export async function updateProduct(req, res) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
-export const deleteProduct = async (req, res) => {
+export async function deleteProduct(req, res) {
   try {
     const { id } = req.params;
 
@@ -114,7 +114,7 @@ export const deleteProduct = async (req, res) => {
     console.error("Error deleting product:", error);
     res.status(500).json({ message: "Failed to delete product" });
   }
-};
+}
 export async function getAllOders(req, res) {
   try {
     const orders = await Order.find()
