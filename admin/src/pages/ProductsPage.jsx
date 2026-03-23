@@ -252,6 +252,8 @@ function ProductsPage() {
                   required
                 >
                   <option value="">Chọn danh mục</option>
+                  <option value="PC">PC</option>
+                  <option value="Laptop">Laptop</option>
                   <option value="Linh kiện máy tính">Linh kiện máy tính</option>
                   <option value="Màn hình">Màn hình</option>
                   <option value="Phụ kiện">Phụ kiện</option>
@@ -262,7 +264,7 @@ function ProductsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="form-control">
                 <label className="label">
-                  <span>Giá (đ)</span>
+                  <span>Giá (VND)</span>
                 </label>
                 <input
                   type="number"
