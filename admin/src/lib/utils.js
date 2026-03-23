@@ -29,7 +29,7 @@ export const getStockStatusBadge = (stock) => {
   return { text: "Còn hàng", class: "badge-success" };
 };
 
-export const formateDate = (dateString) => {
+export const formatDate = (dateString) => {
   if (!dateString) return "";
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return "";

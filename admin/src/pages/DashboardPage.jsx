@@ -10,7 +10,7 @@ import {
 import {
   capitalizeText,
   formatCurrency,
-  formateDate,
+  formatDate,
   getOrderStatusBadge,
 } from "../lib/utils.js";
 
@@ -122,7 +122,7 @@ function DashboardPage() {
 
                       <td>
                         <span className="font-semibold">
-                          {formatCurrency(order.totalPrice.toFixed(2))}đ
+                          {formatCurrency(order.totalPrice.toFixed(2))}VND
                         </span>
                       </td>
 
@@ -136,7 +136,7 @@ function DashboardPage() {
 
                       <td>
                         <span className="text-sm opacity-60">
-                          {formateDate(order.createdAt)}
+                          {formatDate(order.createdAt)}
                         </span>
                       </td>
                     </tr>
