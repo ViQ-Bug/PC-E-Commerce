@@ -20,9 +20,6 @@ function DashboardPage() {
     queryFn: orderApi.getAll,
   });
 
-  console.log(ordersLoading);
-  console.log(ordersData);
-
   const { data: statsData, isLoading: statsLoading } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: statsApi.getDashboard,

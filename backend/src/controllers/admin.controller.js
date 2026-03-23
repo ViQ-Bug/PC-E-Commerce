@@ -78,10 +78,7 @@ export async function updateProduct(req, res) {
       });
 
       const uploadResults = await Promise.all(uploadPromise);
-
-      product.images = imageUrls = uploadResults.map(
-        (result) => result.secure_url,
-      );
+      product.images = uploadResults.map((result) => result.secure_url);
     }
     await product.save();
     res.status(200).json(product);
@@ -163,8 +160,8 @@ export async function updateOrderStatus(req, res) {
 }
 export async function getAllCustomers(_, res) {
   try {
-    const custormers = await User.find().sort({ createdAt: -1 });
-    res.status(200).json({ custormers });
+    const customers = await User.find().sort({ createdAt: -1 });
+    res.status(200).json({ customers });
   } catch (error) {
     console.error("Error getting all customers:", error);
     res.status(500).json({ message: "Internal Server Error" });
