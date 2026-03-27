@@ -5,7 +5,7 @@ import {
   deleteAddresses,
   getAddresses,
   getWishlist,
-  removeFormWishlist,
+  removeFromWishlist,
   updateAddresses,
 } from "../controllers/user.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
@@ -23,7 +23,7 @@ router.delete("/addresses/:addressId", deleteAddresses);
 //Wishlist
 
 router.post("/wishlist", addToWishlist);
-router.delete("/wishlist/:productId", removeFormWishlist);
-router.get("wishlist", getWishlist);
+router.delete("/wishlist/:productId", removeFromWishlist);
+router.get("/wishlist", getWishlist);
 
 export default router;

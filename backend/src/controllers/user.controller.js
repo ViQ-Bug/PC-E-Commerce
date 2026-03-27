@@ -11,9 +11,10 @@ export async function addAddress(req, res) {
     }
 
     if (isDefault) {
-      user.addAddress.forEach((addr) => addr.isDefault == false);
+      user.addresses.forEach((addr) => {
+        addr.isDefault = false;
+      });
     }
-
     user.addresses.push({
       fullName,
       streetAddress,
@@ -93,45 +94,50 @@ export async function addToWishlist(req, res) {
     const user = req.user;
 
     if (user.wishlist.includes(productId)) {
-      return res.status(400).json({ message: "Product already in wishlist" });
+      return res.status(400).json({ error: "Product already in wishlist" });
     }
 
     user.wishlist.push(productId);
     await user.save();
+
     res
-      .status(201)
+      .status(200)
       .json({ message: "Product added to wishlist", wishlist: user.wishlist });
   } catch (error) {
-    console.error("Error adding to wishlist:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error in addToWishlist controller:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
-export async function removeFormWishlist(req, res) {
+export async function removeFromWishlist(req, res) {
   try {
     const { productId } = req.params;
     const user = req.user;
 
+    // check if product is already in the wishlist
     if (!user.wishlist.includes(productId)) {
-      return res.status(400).json({ message: "Product not found in wishlist" });
+      return res.status(400).json({ error: "Product not found in wishlist" });
     }
 
     user.wishlist.pull(productId);
     await user.save();
+
     res.status(200).json({
       message: "Product removed from wishlist",
       wishlist: user.wishlist,
     });
   } catch (error) {
-    console.error("Error removing from wishlist:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error in removeFromWishlist controller:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 export async function getWishlist(req, res) {
   try {
-    const user = await User.findById(req.user._id).populate("wishlist"); //req.user;
+    // we're using populate, bc wishlist is just an array of product ids
+    const user = await User.findById(req.user._id).populate("wishlist");
+
     res.status(200).json({ wishlist: user.wishlist });
   } catch (error) {
-    console.error("Error getting wishlist:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error in getWishlist controller:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
