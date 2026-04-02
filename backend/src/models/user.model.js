@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
+  label: {
+    type: String,
+    required: true,
+  },
   fullName: {
     type: String,
     required: true,
   },
-  steetAddress: {
+  streetAddress: {
     type: String,
     required: true,
   },

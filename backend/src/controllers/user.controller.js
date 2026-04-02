@@ -2,11 +2,12 @@ import { User } from "../models/user.model.js";
 
 export async function addAddress(req, res) {
   try {
-    const { fullName, streetAddress, city, phoneNumber, isDefault } = req.body;
+    const { label, fullName, streetAddress, city, phoneNumber, isDefault } =
+      req.body;
 
     const user = req.user;
 
-    if (!fullName || !streetAddress || !city || !phoneNumber) {
+    if (!label || !fullName || !streetAddress || !city || !phoneNumber) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -16,6 +17,7 @@ export async function addAddress(req, res) {
       });
     }
     user.addresses.push({
+      label,
       fullName,
       streetAddress,
       city,
@@ -44,7 +46,8 @@ export async function getAddresses(req, res) {
 }
 export async function updateAddresses(req, res) {
   try {
-    const { fullName, streetAddress, city, phoneNumber, isDefault } = req.body;
+    const { label, fullName, streetAddress, city, phoneNumber, isDefault } =
+      req.body;
     const { addressId } = req.params;
     const user = req.user;
     const address = user.addresses.id(addressId);
@@ -56,6 +59,7 @@ export async function updateAddresses(req, res) {
       user.addAddress.forEach((addr) => addr.isDefault == false);
     }
 
+    address.label = label || address.label;
     address.fullName = fullName || address.fullName;
     address.streetAddress = streetAddress || address.streetAddress;
     address.city = city || address.city;

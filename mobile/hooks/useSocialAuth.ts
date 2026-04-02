@@ -10,7 +10,10 @@ function useSocialAuth() {
     setLoadingStrategy(strategy);
 
     try {
-      const { createdSessionId, setActive } = await startSSOFlow({ strategy });
+      const { createdSessionId, setActive } = await startSSOFlow({
+        strategy,
+        redirectUrl: "exp://192.168.1.8:8081/--/sso-callback",
+      });
       if (createdSessionId && setActive) {
         await setActive({ session: createdSessionId });
       }
