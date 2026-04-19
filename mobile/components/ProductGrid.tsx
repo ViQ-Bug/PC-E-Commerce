@@ -13,6 +13,7 @@ import useWishlist from "@/hooks/useWishlist";
 import { Ionicons } from "@expo/vector-icons";
 import { formatCurrency } from "@/lib/utils";
 import useCart from "@/hooks/useCart";
+import { router } from "expo-router";
 
 interface ProductsGridProps {
   products: Product[] | undefined;
@@ -38,7 +39,7 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
       },
       {
         onSuccess: () => {
-          Alert.alert("Success", `${productName} added to cart`);
+          Alert.alert("Success", `Thành công thêm ${productName} vào giỏ hàng`);
         },
         onError: (error: any) => {
           Alert.alert("Error", error?.response.data.error);
@@ -51,7 +52,7 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
       className="bg-surface rounded-3xl overflow-hidden mb-3"
       style={{ width: "48%" }}
       activeOpacity={0.8}
-      // onPress={() => router.push(`/product/${product._id}`)}
+      onPress={() => router.push(`/product/${product._id}`)}
     >
       <View className="relative">
         <Image

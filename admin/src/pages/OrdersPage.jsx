@@ -104,7 +104,7 @@ function OrdersPage() {
                           >
                             <option value="pending">Đang chờ</option>
                             <option value="delivering">Đang giao</option>
-                            <option value="cancelled">Đã huỷ</option>
+                            <option value="delivered">Đã giao hàng</option>
                           </select>
                         </td>
 

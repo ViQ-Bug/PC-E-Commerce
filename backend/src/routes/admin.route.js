@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createProduct,
+  deleteCustomer,
   deleteProduct,
   getAllCustomers,
   getAllOders,
@@ -25,5 +26,6 @@ router.get("/orders", getAllOders);
 router.patch("/orders/:orderId/status", updateOrderStatus);
 //PATHCH: update 1 field
 router.get("/customers", getAllCustomers);
+router.get("/customers/:id", deleteCustomer);
 router.get("/stats", getDashboardStats);
 export default router;

@@ -189,11 +189,15 @@ function LoadingUI() {
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
           <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">Wishlist</Text>
+        <Text className="text-text-primary text-2xl font-bold">
+          Danh sách yêu thích
+        </Text>
       </View>
       <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" color="#00D9FF" />
-        <Text className="text-text-secondary mt-4">Loading wishlist...</Text>
+        <Text className="text-text-secondary mt-4">
+          Đang tải danh sách yêu thích...
+        </Text>
       </View>
     </SafeScreen>
   );
@@ -206,15 +210,17 @@ function ErrorUI() {
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
           <Ionicons name="arrow-back" size={28} color="#fff" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">Wishlist</Text>
+        <Text className="text-text-primary text-2xl font-bold">
+          Danh sách yêu thích
+        </Text>
       </View>
       <View className="flex-1 items-center justify-center px-6">
         <Ionicons name="alert-circle-outline" size={64} color="#FF6B6B" />
         <Text className="text-text-primary font-semibold text-xl mt-4">
-          Failed to load wishlist
+          Không thể tải danh sách yêu thích
         </Text>
         <Text className="text-text-secondary text-center mt-2">
-          Please check your connection and try again
+          Vui lòng kiểm tra kết nối và thử lại.
         </Text>
       </View>
     </SafeScreen>
