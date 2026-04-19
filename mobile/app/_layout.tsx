@@ -9,10 +9,10 @@ import {
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import * as Sentry from "@sentry/react-native";
+import * as Linking from "expo-linking"; // ✅ thêm dòng này
 
 Sentry.init({
   dsn: "https://426b5bbff1466ccea1e8c9114a3ef547@o4511091135807488.ingest.us.sentry.io/4511115062214656",
-
   sendDefaultPii: true,
   enableLogs: true,
   replaysSessionSampleRate: 1.0,
@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
       Sentry.captureException(error, {
         tags: {
           type: "react-query-error",
-          queryKey: query.queryKey[0]?.toString() || "unknon",
+          queryKey: query.queryKey[0]?.toString() || "unknown",
         },
         extra: {
           errorMessage: error.message,
@@ -38,7 +38,6 @@ const queryClient = new QueryClient({
   }),
   mutationCache: new MutationCache({
     onError: (error: any) => {
-      // global error handler for all mutations
       Sentry.captureException(error, {
         tags: { type: "react-query-mutation-error" },
         extra: {
@@ -58,7 +57,11 @@ if (!publishableKey) {
 
 export default Sentry.wrap(function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+    <ClerkProvider
+      publishableKey={publishableKey}
+      tokenCache={tokenCache}
+      redirectUrl={Linking.createURL("/")}
+    >
       <QueryClientProvider client={queryClient}>
         <Stack screenOptions={{ headerShown: false }} />
       </QueryClientProvider>
