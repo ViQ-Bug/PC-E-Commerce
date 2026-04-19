@@ -20,8 +20,8 @@ import { formatCurrency } from "@/lib/utils";
 const { width } = Dimensions.get("window");
 
 const ProductDetailScreen = () => {
-  const { id } = useLocalSearchParams();
-  const { data: product, isLoading, isError } = useProduct(id as string);
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: product, isLoading, isError } = useProduct(id);
   const { addToCart, isAddingToCart } = useCart();
   const {
     isInWishlist,
