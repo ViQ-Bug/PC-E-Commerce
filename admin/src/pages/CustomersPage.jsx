@@ -64,7 +64,7 @@ function CustomersPage() {
                       <td>{customer.email}</td>
                       <td>
                         <div className="badge badge-ghost">
-                          {customer.address?.length || 0} địa chỉ
+                          {customer.addresses?.length || 0} địa chỉ
                         </div>
                       </td>
                       <td>

@@ -60,16 +60,16 @@ export async function getUserOrder(req, res) {
       reviews.map((review) => review.orderId.toString()),
     );
 
-    const orderWithReviewStatus = await Promise.all(
+    const ordersWithReviewStatus = await Promise.all(
       orders.map(async (order) => {
         return {
-          ...order.toObject(),
-          hasReview: reviewedOrderIds.has(order._id.toString()),
+          ...orders.toObject(),
+          hasReviewed: reviewedOrderIds.has(order._id.toString()),
         };
       }),
     );
 
-    res.status(200).json({ orders: orderWithReviewStatus });
+    res.status(200).json({ orders: ordersWithReviewStatus });
   } catch (error) {
     console.error("Error getting user order:", error);
     res.status(500).json({ message: "Internal Server Error" });

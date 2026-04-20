@@ -1,0 +1,62 @@
+import { formatCurrency } from "@/lib/utils";
+import { View, Text } from "react-native";
+
+interface OrderSummaryProps {
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+}
+
+export default function OrderSummary({
+  subtotal,
+  shipping,
+  tax,
+  total,
+}: OrderSummaryProps) {
+  return (
+    <View className="px-6 pt-6">
+      <View className="bg-surface rounded-3xl p-5">
+        <Text className="text-text-primary text-xl font-bold mb-4">
+          Đơn hàng
+        </Text>
+
+        <View className="space-y-3">
+          <View className="flex-row justify-between items-center">
+            <Text className="text-text-secondary text-base">Tiền hàng</Text>
+            <Text className="text-text-primary font-semibold text-base">
+              {formatCurrency(subtotal)}
+            </Text>
+          </View>
+
+          <View className="flex-row justify-between items-center">
+            <Text className="text-text-secondary text-base">Phí ship</Text>
+            <Text className="text-text-primary font-semibold text-base">
+              {formatCurrency(shipping)}
+            </Text>
+          </View>
+
+          <View className="flex-row justify-between items-center">
+            <Text className="text-text-secondary text-base">Thuế</Text>
+            <Text className="text-text-primary font-semibold text-base">
+              {formatCurrency(tax)}
+            </Text>
+          </View>
+
+          {/* Divider */}
+          <View className="border-t border-background-lighter pt-3 mt-1" />
+
+          {/* Total */}
+          <View className="flex-row justify-between items-center">
+            <Text className="text-text-primary font-bold text-lg">
+              Tổng tiền
+            </Text>
+            <Text className="text-primary font-bold text-2xl">
+              {formatCurrency(total)}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}

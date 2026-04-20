@@ -56,7 +56,9 @@ export async function updateAddresses(req, res) {
     }
 
     if (isDefault) {
-      user.addAddress.forEach((addr) => addr.isDefault == false);
+      user.addresses.forEach((addr) => {
+        addr.isDefault = false;
+      });
     }
 
     address.label = label || address.label;
