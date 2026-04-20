@@ -119,7 +119,9 @@ export async function getAllOders(req, res) {
       .populate("orderItems.product")
       .sort({ createdAt: -1 });
 
-    res.status(200).json(orders);
+    res.status(200).json({
+      orders,
+    });
   } catch (error) {
     console.error("Error getting all orders:", error);
     res.status(500).json({ message: "Internal Server Error" });

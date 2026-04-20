@@ -39,7 +39,10 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
       },
       {
         onSuccess: () => {
-          Alert.alert("Success", `Thành công thêm ${productName} vào giỏ hàng`);
+          Alert.alert(
+            "Thành công",
+            `Thành công thêm ${productName} vào giỏ hàng`,
+          );
         },
         onError: (error: any) => {
           Alert.alert("Error", error?.response.data.error);

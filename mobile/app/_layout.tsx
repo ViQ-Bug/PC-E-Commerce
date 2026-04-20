@@ -10,6 +10,7 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import * as Sentry from "@sentry/react-native";
 import * as Linking from "expo-linking"; // ✅ thêm dòng này
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 Sentry.init({
   dsn: "https://426b5bbff1466ccea1e8c9114a3ef547@o4511091135807488.ingest.us.sentry.io/4511115062214656",
@@ -63,7 +64,11 @@ export default Sentry.wrap(function RootLayout() {
       redirectUrl={Linking.createURL("/")}
     >
       <QueryClientProvider client={queryClient}>
-        <Stack screenOptions={{ headerShown: false }} />
+        <StripeProvider
+          publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+        >
+          <Stack screenOptions={{ headerShown: false }} />
+        </StripeProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );

@@ -23,6 +23,18 @@ export const getOrderStatusBadge = (status) => {
       return "badge-ghost";
   }
 };
+export const getStatusText = (status) => {
+  switch (status.toLowerCase()) {
+    case "delivered":
+      return "Đã giao";
+    case "shipped":
+      return "Đang giao";
+    case "pending":
+      return "Chờ xử lý";
+    default:
+      return "Không xác định";
+  }
+};
 
 export const getStockStatusBadge = (stock) => {
   if (stock === 0) return { text: "Hết hàng", class: "badge-error" };
