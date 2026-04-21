@@ -7,8 +7,20 @@ import {
   ShoppingBagIcon,
   UsersIcon,
 } from "lucide-react";
+
 import {
-  capitalizeText,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+
+import {
   formatCurrency,
   formatDate,
   getOrderStatusBadge,
@@ -26,7 +38,43 @@ function DashboardPage() {
     queryFn: statsApi.getDashboard,
   });
 
-  const recentOrders = ordersData?.orders?.slice(0, 5) || [];
+  const orders = ordersData?.orders || [];
+  const recentOrders = orders.slice(0, 5);
+
+  // =========================
+  // 📈 Doanh thu theo ngày
+  // =========================
+  const revenueByDate = orders.reduce((acc, order) => {
+    const date = new Date(order.createdAt).toLocaleDateString("vi-VN");
+
+    const existing = acc.find((item) => item.date === date);
+    if (existing) {
+      existing.revenue += order.totalPrice;
+    } else {
+      acc.push({
+        date,
+        revenue: order.totalPrice,
+      });
+    }
+
+    return acc;
+  }, []);
+
+  // =========================
+  // 🥧 Trạng thái đơn hàng
+  // =========================
+  const orderStatusData = Object.values(
+    orders.reduce((acc, order) => {
+      if (!acc[order.status]) {
+        acc[order.status] = {
+          name: getStatusText(order.status),
+          value: 0,
+        };
+      }
+      acc[order.status].value += 1;
+      return acc;
+    }, {}),
+  );
 
   const statsCards = [
     {
@@ -55,7 +103,7 @@ function DashboardPage() {
 
   return (
     <div className="space-y-8 p-4">
-      {/* STATS */}
+      {/* ================= STATS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {statsCards.map((stat) => (
           <div
@@ -71,7 +119,44 @@ function DashboardPage() {
         ))}
       </div>
 
-      {/* ORDERS */}
+      {/* ================= CHARTS ================= */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* LINE CHART */}
+        <div className="bg-base-100 p-5 rounded-xl shadow">
+          <h3 className="font-semibold mb-4">Doanh thu theo ngày</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={revenueByDate}>
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip formatter={(value) => formatCurrency(value)} />
+              <Line type="monotone" dataKey="revenue" strokeWidth={3} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* PIE CHART */}
+        <div className="bg-base-100 p-5 rounded-xl shadow">
+          <h3 className="font-semibold mb-4">Trạng thái đơn hàng</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={orderStatusData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={100}
+                label
+              >
+                {orderStatusData.map((_, index) => (
+                  <Cell key={index} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* ================= ORDERS ================= */}
       <div className="card bg-base-100 shadow-xl rounded-xl">
         <div className="card-body">
           <h2 className="card-title text-lg">Đơn hàng gần đây</h2>
@@ -94,7 +179,7 @@ function DashboardPage() {
                     <th>Sản phẩm</th>
                     <th>Giá</th>
                     <th>Trạng thái</th>
-                    <th>Ngày</th>
+                    <th>Ngày tạo</th>
                   </tr>
                 </thead>
 

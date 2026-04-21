@@ -18,7 +18,7 @@ export default function OrderSummary({
     <View className="px-6 pt-6">
       <View className="bg-surface rounded-3xl p-5">
         <Text className="text-text-primary text-xl font-bold mb-4">
-          Đơn hàng
+          Hoá đơn
         </Text>
 
         <View className="space-y-3">
