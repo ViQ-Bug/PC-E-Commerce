@@ -9,7 +9,7 @@ function Sidebar() {
   const { user } = useUser();
 
   return (
-    <div className="drawer-side is-drawer-close:overflow-visible">
+    <div className="drawer-side is-drawer-close:overflow-visible ">
       <label
         htmlFor="my-drawer"
         aria-label="close sidebar"

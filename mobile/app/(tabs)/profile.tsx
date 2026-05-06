@@ -53,7 +53,7 @@ const ProfileScreen = () => {
       >
         {/* HEADER */}
         <View className="px-6 pb-8">
-          <View className="bg-surface rounded-3xl p-6">
+          <View className="bg-slate-300 rounded-3xl p-6">
             <View className="flex-row items-center">
               <View className="relative">
                 <Image
@@ -61,16 +61,16 @@ const ProfileScreen = () => {
                   style={{ width: 80, height: 80, borderRadius: 40 }}
                   transition={200}
                 />
-                <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-7 items-center justify-center border-2 border-surface">
+                <View className="absolute -bottom-1 -right-1 bg-[#5E81AC] rounded-full size-7 items-center justify-center border-2 border-surface">
                   <Ionicons name="checkmark" size={16} color="#121212" />
                 </View>
               </View>
 
               <View className="flex-1 ml-4">
-                <Text className="text-text-primary text-2xl font-bold mb-1">
+                <Text className="text-zinc-900 text-2xl font-bold mb-1">
                   {user?.firstName} {user?.lastName}
                 </Text>
-                <Text className="text-text-secondary text-sm">
+                <Text className="text-zinc-600 text-sm">
                   {user?.emailAddresses?.[0]?.emailAddress || "No email"}
                 </Text>
               </View>
@@ -82,7 +82,7 @@ const ProfileScreen = () => {
           {MENU_ITEMS.map((item) => (
             <TouchableOpacity
               key={item.id}
-              className="bg-surface rounded-2xl p-6 items-center justify-center"
+              className="bg-slate-300 rounded-2xl p-6 items-center justify-center"
               style={{ width: "48%" }}
               activeOpacity={0.7}
               onPress={() => handleMenuPress(item.action)}
@@ -93,14 +93,14 @@ const ProfileScreen = () => {
               >
                 <Ionicons name={item.icon} size={28} color={item.color} />
               </View>
-              <Text className="text-text-primary font-bold text-base">
+              <Text className="text-zinc-900 font-bold text-base">
                 {item.title}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
         {/* NOTIFICATIONS */}
-        <View className="mb-3 mx-6 bg-surface rounded-2xl p-4">
+        <View className="mb-3 mx-6 bg-slate-300 rounded-2xl p-4">
           <TouchableOpacity
             className="flex-row items-center justify-between py-2"
             activeOpacity={0.7}
@@ -109,9 +109,9 @@ const ProfileScreen = () => {
               <Ionicons
                 name="notifications-outline"
                 size={22}
-                color="#FFFFFF"
+                color="#000000"
               />
-              <Text className="text-text-primary font-semibold ml-3">
+              <Text className="text-zinc-900 font-semibold ml-3">
                 Thông báo
               </Text>
             </View>
@@ -119,7 +119,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         </View>
         {/* PRIVACY AND SECURTIY LINK */}
-        <View className="mb-3 mx-6 bg-surface rounded-2xl p-4">
+        <View className="mb-3 mx-6 bg-slate-300 rounded-2xl p-4">
           <TouchableOpacity
             className="flex-row items-center justify-between py-2"
             activeOpacity={0.7}
@@ -129,9 +129,9 @@ const ProfileScreen = () => {
               <Ionicons
                 name="shield-checkmark-outline"
                 size={22}
-                color="#FFFFFF"
+                color="#000000"
               />
-              <Text className="text-text-primary font-semibold ml-3">
+              <Text className="text-zinc-900 font-semibold ml-3">
                 Quyền riêng tư và bảo mật
               </Text>
             </View>

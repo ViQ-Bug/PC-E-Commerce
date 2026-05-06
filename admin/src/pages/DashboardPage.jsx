@@ -28,6 +28,7 @@ import {
 } from "../lib/utils.js";
 
 function DashboardPage() {
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const { data: ordersData, isLoading: ordersLoading } = useQuery({
     queryKey: ["orders"],
     queryFn: orderApi.getAll,
@@ -147,7 +148,7 @@ function DashboardPage() {
                 label
               >
                 {orderStatusData.map((_, index) => (
-                  <Cell key={index} />
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />

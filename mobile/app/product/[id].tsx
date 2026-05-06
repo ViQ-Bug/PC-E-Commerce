@@ -118,8 +118,8 @@ const ProductDetailScreen = () => {
                 key={index}
                 className={`h-2 rounded-full ${
                   index === selectedImageIndex
-                    ? "bg-primary w-6"
-                    : "bg-white/50 w-2"
+                    ? "bg-[#5E81AC] w-6"
+                    : "bg-slate-500 w-2"
                 }`}
               />
             ))}
@@ -130,14 +130,14 @@ const ProductDetailScreen = () => {
         <View className="p-6">
           {/* Category */}
           <View className="flex-row items-center mb-3">
-            <View className="bg-primary/20 px-3 py-1 rounded-full">
-              <Text className="text-primary text-xs font-bold">
+            <View className="bg-blue-500/20 px-3 py-1 rounded-full">
+              <Text className="text-[#5E81AC] text-xs font-bold">
                 {product.category}
               </Text>
             </View>
           </View>
           {/* Product Name */}
-          <Text className="text-text-primary text-3xl font-bold mb-3">
+          <Text className="text-zinc-900 text-3xl font-bold mb-3">
             {product.name}
           </Text>
           {/* Rating & Reviews */}
@@ -153,8 +153,8 @@ const ProductDetailScreen = () => {
             </View>
             {inStock ? (
               <View className="ml-3 flex-row items-center">
-                <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                <Text className="text-green-500 font-semibold text-sm">
+                <View className="w-2 h-2 bg-[#5E81AC] rounded-full mr-2" />
+                <Text className="text-[#5E81AC] font-semibold text-sm">
                   {product.stock} tồn kho
                 </Text>
               </View>
@@ -170,14 +170,14 @@ const ProductDetailScreen = () => {
 
           {/* Price */}
           <View className="flex-row items-center mb-6">
-            <Text className="text-primary text-4xl font-bold">
+            <Text className="text-[#5E81AC] text-4xl font-bold">
               {formatCurrency(product.price)}
             </Text>
           </View>
 
           {/* Quantity */}
           <View className="mb-6">
-            <Text className="text-text-primary text-lg font-bold mb-3">
+            <Text className="text-zinc-900 text-lg font-bold mb-3">
               Số lượng:
             </Text>
             <View className="flex-row items-center">
@@ -194,12 +194,12 @@ const ProductDetailScreen = () => {
                 />
               </TouchableOpacity>
 
-              <Text className="text-text-primary text-xl font-bold mx-6">
+              <Text className="text-zinc-900 text-xl font-bold mx-6">
                 {quantity}
               </Text>
 
               <TouchableOpacity
-                className="bg-primary rounded-full w-12 h-12 items-center justify-center"
+                className="bg-[#5E81AC] rounded-full w-12 h-12 items-center justify-center"
                 onPress={() =>
                   setQuantity(Math.min(product.stock, quantity + 1))
                 }
@@ -224,9 +224,7 @@ const ProductDetailScreen = () => {
           </View>
           {/* Description */}
           <View className="mb-8">
-            <Text className="text-text-primary text-lg font-bold mb-3">
-              Mô tả
-            </Text>
+            <Text className="text-zinc-900 text-lg font-bold mb-3">Mô tả</Text>
             <Text className="text-text-secondary text-base leading-6">
               {product.description}
             </Text>
@@ -241,13 +239,13 @@ const ProductDetailScreen = () => {
             <Text className="text-text-secondary text-sm mb-1">
               Tổng giá tiền
             </Text>
-            <Text className="text-primary text-2xl font-bold">
+            <Text className="text-[#5E81AC] text-2xl font-bold">
               {formatCurrency(product.price * quantity)}
             </Text>
           </View>
           <TouchableOpacity
             className={`rounded-2xl px-8 py-4 flex-row items-center ${
-              !inStock ? "bg-surface" : "bg-primary"
+              !inStock ? "bg-surface" : "bg-[#5E81AC]"
             }`}
             activeOpacity={0.8}
             onPress={handleAddToCart}
@@ -292,7 +290,7 @@ function ErrorUI() {
           Sản phẩm này có thể đã bị xóa hoặc không còn tồn tại.
         </Text>
         <TouchableOpacity
-          className="bg-primary rounded-2xl px-6 py-3 mt-6"
+          className="bg-[#5E81AC] rounded-2xl px-6 py-3 mt-6"
           onPress={() => router.back()}
         >
           <Text className="text-background font-bold">Quay lại</Text>
@@ -306,7 +304,7 @@ function LoadingUI() {
   return (
     <SafeScreen>
       <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#1DB954" />
+        <ActivityIndicator size="large" color="#5E81AC" />
         <Text className="text-text-secondary mt-4">Đang tải sản phẩm...</Text>
       </View>
     </SafeScreen>

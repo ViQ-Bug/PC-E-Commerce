@@ -58,7 +58,7 @@ const ShopScreen = () => {
         <View className="px-6 pb-4 pt-6">
           <View className="flex-row items-center justify-between mb-6">
             <View>
-              <Text className="text-text-primary text-3xl font-bold tractking-tight">
+              <Text className="text-background-light text-3xl font-bold tractking-tight">
                 Cửa hàng
               </Text>
               <Text className="text-text-secondary text-sm mt-1">
@@ -74,7 +74,7 @@ const ShopScreen = () => {
           </View>
 
           {/* SEARCH BAR */}
-          <View className="bg-surface flex-row items-center px-5 py-4 rounded-2xl">
+          <View className="bg-[#a0a1a3] flex-row items-center px-5 py-4 rounded-2xl">
             <Ionicons color={"#666"} size={22} name="search" />
             <TextInput
               placeholder="Tìm kiếm"
@@ -99,13 +99,13 @@ const ShopScreen = () => {
                 <TouchableOpacity
                   key={category.name}
                   onPress={() => setSelectedCategory(category.name)}
-                  className={`mr-3 rounded-2xl size-20 overflow-hidden items-center justify-center ${isSelected ? " bg-primary" : "bg-surface"}`}
+                  className={`mr-3 rounded-2xl size-20 overflow-hidden items-center justify-center ${isSelected ? " bg-[#5E81AC]" : "bg-slate-50"}`}
                 >
                   {category.icon ? (
                     <Ionicons
                       name={category.icon}
                       size={36}
-                      color={isSelected ? "#121212" : "#fff"}
+                      color={isSelected ? "#121212" : "#666"}
                     />
                   ) : (
                     <Image
@@ -122,9 +122,7 @@ const ShopScreen = () => {
 
         <View className="px-6 mb-6">
           <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-text-primary text-lg font-bold">
-              Sản phẩm
-            </Text>
+            <Text className="text-neutral-900 text-lg font-bold">Sản phẩm</Text>
             <Text className="text-text-secondary text-sm">
               {filteredProducts.length} sản phẩm
             </Text>

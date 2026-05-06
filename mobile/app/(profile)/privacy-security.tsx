@@ -125,11 +125,11 @@ function PrivacySecurityScreen() {
   return (
     <SafeScreen>
       {/* HEADER */}
-      <View className="px-6 pb-5 border-b border-surface flex-row items-center">
+      <View className="px-6 pb-5 flex-row items-center">
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
-          <Ionicons name="arrow-back" size={28} color="#fff" />
+          <Ionicons name="arrow-back" size={28} color="#000000" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">
+        <Text className="text-zinc-900 text-2xl font-bold">
           Quyền riêng tư và bảo mật
         </Text>
       </View>
@@ -141,14 +141,12 @@ function PrivacySecurityScreen() {
       >
         {/* SECURITY SETTINGS */}
         <View className="px-6 pt-6">
-          <Text className="text-text-primary text-lg font-bold mb-4">
-            Bảo mật
-          </Text>
+          <Text className="text-zinc-900  text-lg font-bold mb-4">Bảo mật</Text>
 
           {securitySettings.map((setting) => (
             <TouchableOpacity
               key={setting.id}
-              className="bg-surface rounded-2xl p-4 mb-3"
+              className="bg-slate-300 rounded-2xl p-4 mb-3"
               activeOpacity={setting.type === "toggle" ? 1 : 0.7}
             >
               <View className="flex-row items-center">
@@ -156,12 +154,12 @@ function PrivacySecurityScreen() {
                   <Ionicons
                     name={setting.icon as any}
                     size={24}
-                    color="#1DB954"
+                    color="#5E81AC"
                   />
                 </View>
 
                 <View className="flex-1">
-                  <Text className="text-text-primary font-bold text-base mb-1">
+                  <Text className="text-zinc-900 font-bold text-base mb-1">
                     {setting.title}
                   </Text>
                   <Text className="text-text-secondary text-sm">
@@ -174,7 +172,7 @@ function PrivacySecurityScreen() {
                     value={setting.value}
                     onValueChange={(value) => handleToggle(setting.id, value)}
                     thumbColor="#FFFFFF"
-                    trackColor={{ false: "#2A2A2A", true: "#1DB954" }}
+                    trackColor={{ false: "#2A2A2A", true: "#5E81AC" }}
 
                     // ios_backgroundColor={"purple"}
                   />
@@ -188,23 +186,23 @@ function PrivacySecurityScreen() {
 
         {/* Privacy Section */}
         <View className="px-6 pt-4">
-          <Text className="text-text-primary text-lg font-bold mb-4">
+          <Text className="text-zinc-900  text-lg font-bold mb-4">
             Quyền riêng tư
           </Text>
 
           {privacySettings.map((setting) => (
             <View key={setting.id}>
-              <View className="bg-surface rounded-2xl p-4 mb-3">
+              <View className="bg-slate-300 rounded-2xl p-4 mb-3">
                 <View className="flex-row items-center">
                   <View className="bg-primary/20 rounded-full w-12 h-12 items-center justify-center mr-4">
                     <Ionicons
                       name={setting.icon as any}
                       size={24}
-                      color="#1DB954"
+                      color="#5E81AC"
                     />
                   </View>
                   <View className="flex-1">
-                    <Text className="text-text-primary font-bold text-base mb-1">
+                    <Text className="text-zinc-900 font-bold text-base mb-1">
                       {setting.title}
                     </Text>
                     <Text className="text-text-secondary text-sm">
@@ -214,7 +212,7 @@ function PrivacySecurityScreen() {
                   <Switch
                     value={setting.value}
                     onValueChange={(value) => handleToggle(setting.id, value)}
-                    trackColor={{ false: "#2A2A2A", true: "#1DB954" }}
+                    trackColor={{ false: "#2A2A2A", true: "#5E81AC" }}
                     thumbColor="#FFFFFF"
                   />
                 </View>
@@ -225,14 +223,14 @@ function PrivacySecurityScreen() {
 
         {/* ACCOUNT SECTION */}
         <View className="px-6 pt-4">
-          <Text className="text-text-primary text-lg font-bold mb-4">
+          <Text className="text-zinc-900  text-lg font-bold mb-4">
             Tài khoản
           </Text>
 
           {accountSettings.map((setting) => (
             <TouchableOpacity
               key={setting.id}
-              className="bg-surface rounded-2xl p-4 mb-3"
+              className="bg-slate-300 rounded-2xl p-4 mb-3"
               activeOpacity={0.7}
             >
               <View className="flex-row items-center">
@@ -240,11 +238,11 @@ function PrivacySecurityScreen() {
                   <Ionicons
                     name={setting.icon as any}
                     size={24}
-                    color="#1DB954"
+                    color="#5E81AC"
                   />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-text-primary font-bold text-base mb-1">
+                  <Text className="text-zinc-900 font-bold text-base mb-1">
                     {setting.title}
                   </Text>
                   <Text className="text-text-secondary text-sm">
@@ -259,7 +257,7 @@ function PrivacySecurityScreen() {
         {/* DELETE ACC BTN */}
         <View className="px-6 pt-4">
           <TouchableOpacity
-            className="bg-surface rounded-2xl p-5 flex-row items-center justify-between border-2 border-red-500/20"
+            className="bg-slate-300 rounded-2xl p-5 flex-row items-center justify-between border-2 border-red-500/20"
             activeOpacity={0.7}
           >
             <View className="flex-row items-center">

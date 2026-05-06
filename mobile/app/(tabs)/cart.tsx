@@ -137,7 +137,7 @@ const CartScreen = () => {
   if (cartItems.length === 0) return <EmptyUI />;
   return (
     <SafeScreen>
-      <Text className="px-6 pb-5 text-text-primary text-3xl font-bold tracking-tight">
+      <Text className="px-6 pb-5 text-neutral-900 text-3xl font-bold tracking-tight">
         Giỏ hàng
       </Text>
       <ScrollView
@@ -149,7 +149,7 @@ const CartScreen = () => {
           {cartItems.map((item) => (
             <View
               key={item._id}
-              className="bg-surface rounded-3xl overflow-hidden"
+              className="bg-slate-300 rounded-3xl overflow-hidden"
             >
               <View className="p-4 flex-row">
                 {/* IMAGE */}
@@ -160,7 +160,7 @@ const CartScreen = () => {
                     contentFit="cover"
                     style={{ width: 112, height: 112, borderRadius: 16 }}
                   />
-                  <View className="absolute top-2 right-2 bg-primary rounded-full px-2 py-0.5">
+                  <View className="absolute top-2 right-2 bg-[#5E81AC] rounded-full px-2 py-0.5">
                     <Text className="text-background text-xs font-bold">
                       {item.quantity}
                     </Text>
@@ -176,7 +176,7 @@ const CartScreen = () => {
                       {item.product.name}
                     </Text>
                     <View className="flex-col justify-center mt-2">
-                      <Text className="text-primary items-center text-2xl">
+                      <Text className="text-[#5E81AC] items-center text-2xl">
                         {formatCurrency(item.product.price * item.quantity)}
                       </Text>
                       <Text className="text-text-secondary text-sm ml-2">
@@ -212,7 +212,7 @@ const CartScreen = () => {
                     </View>
 
                     <TouchableOpacity
-                      className="bg-primary rounded-full w-9 h-9 items-center justify-center"
+                      className="bg-[#5E81AC] rounded-full w-9 h-9 items-center justify-center"
                       activeOpacity={0.7}
                       onPress={() =>
                         handleQuantityChange(item.product._id, item.quantity, 1)
@@ -257,7 +257,7 @@ const CartScreen = () => {
       <View className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-surface pt-4 pb-32 px-6">
         <View className="flex-row items-center justify-between mb-4">
           <View className="flex-row items-center">
-            <Ionicons name="cart" size={20} color="#1DB954" />
+            <Ionicons name="cart" size={20} color="#5E81AC" />
             <Text className="text-text-secondary ml-2">
               {cartItemCount} {cartItemCount === 1 ? "sản phẩm" : "sản phẩm"}
             </Text>
@@ -270,7 +270,7 @@ const CartScreen = () => {
         </View>
 
         <TouchableOpacity
-          className="bg-primary rounded-2xl overflow-hidden"
+          className="bg-[#5E81AC] rounded-2xl overflow-hidden"
           activeOpacity={0.9}
           onPress={handleCheckout}
           disabled={paymentLoading}
@@ -326,15 +326,15 @@ function ErrorUI() {
 
 function EmptyUI() {
   return (
-    <View className="flex-1 bg-background">
+    <View className="flex-1 bg-slate-50">
       <View className="px-6 pt-16 pb-5">
-        <Text className="text-text-primary text-3xl font-bold tracking-tight">
+        <Text className="text-neutral-900 text-3xl font-bold tracking-tight">
           Giỏ hàng
         </Text>
       </View>
       <View className="flex-1 items-center justify-center px-6">
         <Ionicons name="cart-outline" size={80} color="#666" />
-        <Text className="text-text-primary font-semibold text-xl mt-4">
+        <Text className="text-neutral-900 font-semibold text-xl mt-4">
           Giỏ hàng của bạn đang trống
         </Text>
         <Text className="text-text-secondary text-center mt-2">

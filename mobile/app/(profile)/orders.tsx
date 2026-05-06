@@ -80,11 +80,11 @@ function OrdersScreen() {
   return (
     <SafeScreen>
       {/* Header */}
-      <View className="px-6 pb-5 border-b border-surface flex-row items-center">
+      <View className="px-6 pb-5 flex-row items-center">
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
-          <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
+          <Ionicons name="arrow-back" size={28} color="#000000" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">
+        <Text className="text-zinc-900 text-2xl font-bold">
           Đơn hàng của tôi
         </Text>
       </View>
@@ -112,7 +112,7 @@ function OrdersScreen() {
               return (
                 <View
                   key={order._id}
-                  className="bg-surface rounded-3xl p-5 mb-4"
+                  className="bg-slate-300 rounded-3xl p-5 mb-4"
                 >
                   <View className="flex-row mb-4">
                     <View className="relative">
@@ -124,7 +124,7 @@ function OrdersScreen() {
 
                       {/* BADGE FOR MORE ITEMS */}
                       {order.orderItems.length > 1 && (
-                        <View className="absolute -bottom-1 -right-1 bg-primary rounded-full size-7 items-center justify-center">
+                        <View className="absolute -bottom-1 -right-1 bg-[#5E81AC] rounded-full size-7 items-center justify-center">
                           <Text className="text-background text-xs font-bold">
                             +{order.orderItems.length - 1}
                           </Text>
@@ -133,7 +133,7 @@ function OrdersScreen() {
                     </View>
 
                     <View className="flex-1 ml-4">
-                      <Text className="text-text-primary font-bold text-base mb-1">
+                      <Text className="text-zinc-900 font-bold text-base mb-1">
                         Đơn hàng #{order._id.slice(-8).toUpperCase()}
                       </Text>
                       <Text className="text-text-secondary text-sm mb-2">
@@ -171,26 +171,26 @@ function OrdersScreen() {
                       <Text className="text-text-secondary text-xs mb-1">
                         {totalItems} sản phẩm
                       </Text>
-                      <Text className="text-primary font-bold text-xl">
+                      <Text className="text-[#5E81AC] font-bold text-xl">
                         {formatCurrency(order.totalPrice)}
                       </Text>
                     </View>
 
                     {order.status === "delivered" &&
                       (order.hasReviewed ? (
-                        <View className="bg-primary/20 px-5 py-3 rounded-full flex-row items-center">
+                        <View className="bg-blue-500/20 px-5 py-3 rounded-full flex-row items-center">
                           <Ionicons
                             name="checkmark-circle"
                             size={18}
-                            color="#1DB954"
+                            color="#5E81AC"
                           />
-                          <Text className="text-primary font-bold text-sm ml-2">
+                          <Text className="text-[#5E81AC] font-bold text-sm ml-2">
                             Đánh giá
                           </Text>
                         </View>
                       ) : (
                         <TouchableOpacity
-                          className="bg-primary px-5 py-3 rounded-full flex-row items-center"
+                          className="bg-[#5E81AC] px-5 py-3 rounded-full flex-row items-center"
                           activeOpacity={0.7}
                           onPress={() => handleOpenRating(order)}
                         >
@@ -252,7 +252,7 @@ function EmptyUI() {
   return (
     <View className="flex-1 items-center justify-center px-6">
       <Ionicons name="receipt-outline" size={80} color="#666" />
-      <Text className="text-text-primary font-semibold text-xl mt-4">
+      <Text className="text-zinc-900 font-semibold text-xl mt-4">
         Chưa có đơn hàng nào
       </Text>
       <Text className="text-text-secondary text-center mt-2">

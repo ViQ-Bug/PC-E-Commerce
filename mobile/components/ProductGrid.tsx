@@ -52,7 +52,7 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
   };
   const renderProduct = ({ item: product }: { item: Product }) => (
     <TouchableOpacity
-      className="bg-surface rounded-3xl overflow-hidden mb-3"
+      className="bg-slate-300  rounded-3xl overflow-hidden mb-3"
       style={{ width: "48%" }}
       activeOpacity={0.8}
       onPress={() => router.push(`/product/${product._id}`)}
@@ -83,11 +83,9 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
       </View>
 
       <View className="p-3">
-        <Text className="text-text-secondary text-xs mb-1">
-          {product.category}
-        </Text>
+        <Text className="text-zinc-900 text-xs mb-1">{product.category}</Text>
         <Text
-          className="text-text-primary font-bold text-sm mb-2"
+          className="text-neutral-800 font-bold text-sm mb-2"
           numberOfLines={2}
         >
           {product.name}
@@ -95,21 +93,21 @@ const ProductGrid = ({ products, isLoading, isError }: ProductsGridProps) => {
 
         <View className="flex-row items-center mb-2">
           <Ionicons name="star" size={12} color="#FFC107" />
-          <Text className="text-text-primary text-xs font-semibold ml-1">
+          <Text className="text-neutral-800 text-xs font-semibold ml-1">
             {product.averageRating.toFixed(1)}
           </Text>
-          <Text className="text-text-secondary text-xs ml-1">
+          <Text className="text-neutral-800 text-xs ml-1">
             ({product.totalReviews})
           </Text>
         </View>
 
         <View className="flex-row items-center justify-between">
-          <Text className="text-primary font-bold text-lg">
+          <Text className="text-[#5E81AC] font-bold text-lg">
             {formatCurrency(product.price)}
           </Text>
 
           <TouchableOpacity
-            className="bg-primary rounded-full w-8 h-8 items-center justify-center"
+            className="bg-[#5E81AC] rounded-full w-8 h-8 items-center justify-center"
             activeOpacity={0.7}
             onPress={() => handleAddToCart(product._id, product.name)}
             disabled={isAddingToCart}

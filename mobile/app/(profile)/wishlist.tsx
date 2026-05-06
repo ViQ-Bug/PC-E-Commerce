@@ -63,11 +63,13 @@ function WishlistScreen() {
   return (
     <SafeScreen>
       {/* HEADER */}
-      <View className="px-6 pb-5 border-b border-surface flex-row items-center">
+      <View className="px-6 pb-5 flex-row items-center">
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
-          <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
+          <Ionicons name="arrow-back" size={28} color="#000000" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">Wishlist</Text>
+        <Text className="text-zinc-900 text-2xl font-bold">
+          Danh sách yêu thích
+        </Text>
         <Text className="text-text-secondary text-sm ml-auto">
           {wishlist.length} {wishlist.length === 1 ? "mặt hàng" : "mặt hàng"}
         </Text>
@@ -76,14 +78,14 @@ function WishlistScreen() {
       {wishlist.length === 0 ? (
         <View className="flex-1 items-center justify-center px-6">
           <Ionicons name="heart-outline" size={80} color="#666" />
-          <Text className="text-text-primary font-semibold text-xl mt-4">
+          <Text className="text-zinc-900 font-semibold text-xl mt-4">
             Danh sách yêu thích của bạn còn trống
           </Text>
           <Text className="text-text-secondary text-center mt-2">
             Bắt đầu thêm mặt hàng về danh sách yêu thích của bản
           </Text>
           <TouchableOpacity
-            className="bg-primary rounded-2xl px-8 py-4 mt-6"
+            className="bg-[#5E81AC] rounded-2xl px-8 py-4 mt-6"
             activeOpacity={0.8}
             onPress={() => router.push("/(tabs)")}
           >
@@ -102,7 +104,7 @@ function WishlistScreen() {
             {wishlist.map((item) => (
               <TouchableOpacity
                 key={item._id}
-                className="bg-surface rounded-3xl overflow-hidden mb-3"
+                className="bg-slate-300 rounded-3xl overflow-hidden mb-3"
                 activeOpacity={0.8}
                 // onPress={() => router.push(`/product/${item._id}`)}
               >
@@ -114,21 +116,21 @@ function WishlistScreen() {
                   />
                   <View className="flex-1 ml-4">
                     <Text
-                      className="text-text-primary font-bold text-base mb-2"
+                      className="text-zinc-900 font-bold text-base mb-2"
                       numberOfLines={2}
                     >
                       {item.name}
                     </Text>
                     <Text
-                      className="text-primary font-bold text-base mb-2"
+                      className="text-[#5E81AC] font-bold text-base mb-2"
                       numberOfLines={2}
                     >
                       {formatCurrency(item.price)}
                     </Text>
                     {item.stock > 0 ? (
                       <View className="flex-row items-center">
-                        <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                        <Text className="text-green-500 text-sm font-semibold">
+                        <View className="w-2 h-2 bg-[#5E81AC] rounded-full mr-2" />
+                        <Text className="text-[#5E81AC] text-sm font-semibold">
                           {item.stock} tồn kho
                         </Text>
                       </View>
@@ -156,7 +158,7 @@ function WishlistScreen() {
                 {item.stock > 0 && (
                   <View className="px-4 pb-4">
                     <TouchableOpacity
-                      className="bg-primary rounded-xl py-3 items-center"
+                      className="bg-[#5E81AC] rounded-xl py-3 items-center"
                       activeOpacity={0.8}
                       onPress={() => handleAddToCart(item._id, item.name)}
                       disabled={isAddingToCart}
@@ -189,7 +191,7 @@ function LoadingUI() {
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
           <Ionicons name="arrow-back" size={28} color="#FFFFFF" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">
+        <Text className="text-zinc-900 text-2xl font-bold">
           Danh sách yêu thích
         </Text>
       </View>
@@ -210,13 +212,13 @@ function ErrorUI() {
         <TouchableOpacity onPress={() => router.back()} className="mr-4">
           <Ionicons name="arrow-back" size={28} color="#fff" />
         </TouchableOpacity>
-        <Text className="text-text-primary text-2xl font-bold">
+        <Text className="text-zinc-900 text-2xl font-bold">
           Danh sách yêu thích
         </Text>
       </View>
       <View className="flex-1 items-center justify-center px-6">
         <Ionicons name="alert-circle-outline" size={64} color="#FF6B6B" />
-        <Text className="text-text-primary font-semibold text-xl mt-4">
+        <Text className="text-zinc-900 font-semibold text-xl mt-4">
           Không thể tải danh sách yêu thích
         </Text>
         <Text className="text-text-secondary text-center mt-2">

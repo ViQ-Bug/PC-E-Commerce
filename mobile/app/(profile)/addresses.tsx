@@ -143,14 +143,14 @@ function AddressesScreen() {
       {addresses.length === 0 ? (
         <View className="flex-1 items-center justify-center px-6">
           <Ionicons name="location-outline" size={80} color="#666" />
-          <Text className="text-text-primary font-semibold text-xl mt-4">
+          <Text className="text-zinc-900 font-semibold text-xl mt-4">
             Chưa có địa chỉ giao hàng
           </Text>
           <Text className="text-text-secondary text-center mt-2">
             Thêm địa chỉ giao hàng đầu tiên của bạn
           </Text>
           <TouchableOpacity
-            className="bg-primary rounded-2xl px-8 py-4 mt-6"
+            className="bg-[#5E81AC]  rounded-2xl px-8 py-4 mt-6"
             activeOpacity={0.8}
             onPress={handleAddAddress}
           >
@@ -178,7 +178,7 @@ function AddressesScreen() {
             ))}
 
             <TouchableOpacity
-              className="bg-primary rounded-2xl py-4 items-center mt-2"
+              className="bg-[#5E81AC] rounded-2xl py-4 items-center mt-2"
               activeOpacity={0.8}
               onPress={handleAddAddress}
             >
