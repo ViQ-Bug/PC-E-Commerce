@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-// import { PayOS } from "@payos/node";
+import { PayOS } from "@payos/node";
 import { ENV } from "../config/env.js";
 import { User } from "../models/user.model.js";
 import { Product } from "../models/product.model.js";
@@ -7,12 +7,11 @@ import { Order } from "../models/order.model.js";
 import { Cart } from "../models/cart.model.js";
 
 const stripe = new Stripe(ENV.STRIPE_SECRET_KEY);
-// const payos = new PayOS(
-//   ENV.PAYOS_CLIENT_ID,
-//   ENV.PAYOS_API_KEY,
-//   ENV.PAYOS_CHECKSUM_KEY,
-// );
-
+const payos = new PayOS({
+  clientId: ENV.PAYOS_CLIENT_ID,
+  apiKey: ENV.PAYOS_API_KEY,
+  checksumKey: ENV.PAYOS_CHECKSUM_KEY,
+});
 export async function createPaymentIntent(req, res) {
   try {
     const { cartItems, shippingAddress } = req.body;
@@ -160,74 +159,56 @@ export async function handleWebhook(req, res) {
 
   res.json({ received: true });
 }
-// export async function createPayOSLink(req, res) {
-//   try {
-//     const { cartItems, shippingAddress } = req.body;
-//     const user = req.user; // Thừa hưởng middleware xác thực của bạn
+export const createPayOSPayment = async (req, res) => {
+  try {
+    const { cartItems, shippingAddress } = req.body;
 
-//     if (!cartItems || cartItems.length === 0) {
-//       return res.status(400).json({ error: "Cart is empty" });
-//     }
+    const total = cartItems.reduce((sum, item) => {
+      return sum + item.product.price * item.quantity;
+    }, 0);
 
-//     // Bảo mật nâng cao: Tính toán lại tổng số tiền từ Server giống hệt Stripe
-//     let subtotal = 0;
-//     const validatedItems = [];
+    const orderCode = Date.now();
 
-//     for (const item of cartItems) {
-//       const product = await Product.findById(item.product._id);
-//       if (!product) {
-//         return res
-//           .status(404)
-//           .json({ error: `Product ${item.product.name} not found` });
-//       }
+    const paymentLink = await payos.paymentRequests.create({
+      orderCode,
 
-//       if (product.stock < item.quantity) {
-//         return res
-//           .status(400)
-//           .json({ error: `Insufficient stock for ${product.name}` });
-//       }
+      amount: Math.round(total),
 
-//       subtotal += product.price * item.quantity;
-//       validatedItems.push({
-//         name: product.name.slice(0, 20), // Tên sản phẩm rút gọn theo luật của PayOS
-//         quantity: item.quantity,
-//         price: Math.round(product.price),
-//       });
-//     }
+      description: "Thanh toan don hang",
 
-//     const shipping = 10.0;
-//     const tax = subtotal * 0.08;
-//     const total = subtotal + shipping + tax;
+      returnUrl: "https://google.com",
+      cancelUrl: "https://google.com",
+    });
 
-//     if (total <= 0) {
-//       return res.status(400).json({ error: "Invalid order total" });
-//     }
+    res.json({
+      checkoutUrl: paymentLink.checkoutUrl,
+    });
+  } catch (error) {
+    console.log(error);
 
-//     // Luật PayOS: Mã đơn hàng phải là kiểu số (Number)
-//     const orderCode = Math.floor(Math.random() * 1000000);
-//     const description = `Thanh toan don ${orderCode}`.slice(0, 25);
+    res.status(500).json({
+      message: "PayOS payment failed",
+    });
+  }
+};
+export const payOSWebhook = async (req, res) => {
+  try {
+    console.log(req.body);
 
-//     const paymentBody = {
-//       orderCode: orderCode,
-//       amount: Math.round(total),
-//       description: description,
-//       items: validatedItems,
-//       returnUrl: "https://yourdomain.com/payment-success", // Điền link web/deeplink của bạn
-//       cancelUrl: "https://yourdomain.com/payment-cancel",
-//     };
+    const { data } = req.body;
 
-//     const paymentLinkResponse = await payos.createPaymentLink(paymentBody);
+    if (data.code === "00") {
+      console.log("Thanh toán thành công");
+    }
 
-//     return res.status(200).json({
-//       success: true,
-//       checkoutUrl: paymentLinkResponse.checkoutUrl,
-//       orderCode: orderCode,
-//     });
-//   } catch (error) {
-//     console.error("PayOS Error Backend:", error);
-//     return res.status(500).json({
-//       error: "Không thể tạo link thanh toán PayOS",
-//       details: error.message,
-//     });
-//   }
-// }
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+    });
+  }
+};

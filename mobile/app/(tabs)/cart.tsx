@@ -18,17 +18,16 @@ import { Image } from "expo-image";
 import { formatCurrency } from "@/lib/utils";
 import OrderSummary from "@/components/OrderSummary";
 import AddressSelectionModal from "@/components/AddressSelectionModal";
+import * as WebBrowser from "expo-web-browser";
 
 const CartScreen = () => {
   const api = useApi();
+
   const {
-    addToCart,
-    isAddingToCart,
     cart,
     cartItemCount,
     cartTotal,
     clearCart,
-    isClearing,
     isError,
     isLoading,
     isRemoving,
@@ -36,15 +35,27 @@ const CartScreen = () => {
     removeFromCart,
     updateQuantity,
   } = useCart();
+
   const { addresses } = useAddresses();
+
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
   const [paymentLoading, setPaymentLoading] = useState(false);
+
   const [addressModalVisible, setAddressModalVisible] = useState(false);
 
+  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "payos">(
+    "stripe",
+  );
+
   const cartItems = cart?.items || [];
+
   const subtotal = cartTotal;
-  const shipping = 10.0;
+
+  const shipping = 10;
+
   const tax = 0.08;
+
   const total = subtotal + shipping + tax;
 
   const handleQuantityChange = (
@@ -53,8 +64,13 @@ const CartScreen = () => {
     change: number,
   ) => {
     const newQuantity = quantity + change;
+
     if (newQuantity < 1) return;
-    updateQuantity({ productId, quantity: newQuantity });
+
+    updateQuantity({
+      productId,
+      quantity: newQuantity,
+    });
   };
 
   const handleRemoveItem = (productId: string, productName: string) => {
@@ -62,7 +78,10 @@ const CartScreen = () => {
       "Xóa mặt hàng",
       `Đã xóa ${productName}`,
       [
-        { text: "Huỷ", style: "cancel" },
+        {
+          text: "Huỷ",
+          style: "cancel",
+        },
         {
           text: "Xóa",
           style: "destructive",
@@ -74,58 +93,85 @@ const CartScreen = () => {
   };
 
   const handleCheckout = () => {
-    if (cartItems.length === 0) return 0;
+    if (cartItems.length === 0) return;
 
     if (!addresses || addresses.length === 0) {
-      Alert.alert(
-        "Không có địa chỉ nào",
-        "Vui lý thêm địa chỉ giao hàng trong tài khoản của bạn",
-      );
+      Alert.alert("Không có địa chỉ nào", "Vui lòng thêm địa chỉ giao hàng");
+
       return;
     }
 
     setAddressModalVisible(true);
   };
 
+  const handleStripePayment = async (selectedAddress: Address) => {
+    const { data } = await api.post("/payment/create-intent", {
+      cartItems,
+      shippingAddress: {
+        fullName: selectedAddress.fullName,
+        streetAddress: selectedAddress.streetAddress,
+        city: selectedAddress.city,
+        phoneNumber: selectedAddress.phoneNumber,
+      },
+    });
+
+    const { error: initError } = await initPaymentSheet({
+      paymentIntentClientSecret: data.clientSecret,
+
+      merchantDisplayName: "admin",
+
+      returnURL: "myapp://stripe-redirect",
+    });
+
+    if (initError) {
+      Alert.alert("Stripe Error", initError.message);
+
+      return;
+    }
+
+    const { error: presentError } = await presentPaymentSheet();
+
+    if (presentError) {
+      Alert.alert("Huỷ thanh toán", "Thanh toán đã bị huỷ");
+
+      return;
+    }
+
+    Alert.alert("Thành công", "Thanh toán thành công");
+
+    clearCart();
+  };
+
+  const handlePayOSPayment = async (selectedAddress: Address) => {
+    const { data } = await api.post("/payment/create-payos", {
+      cartItems,
+      shippingAddress: {
+        fullName: selectedAddress.fullName,
+        streetAddress: selectedAddress.streetAddress,
+        city: selectedAddress.city,
+        phoneNumber: selectedAddress.phoneNumber,
+      },
+    });
+
+    await WebBrowser.openBrowserAsync(data.checkoutUrl);
+
+    Alert.alert("Đang xử lý", "Sau khi thanh toán hãy quay lại app");
+  };
+
   const handleProceeWithPayment = async (selectedAddress: Address) => {
     setAddressModalVisible(false);
+
     try {
       setPaymentLoading(true);
 
-      const { data } = await api.post("/payment/create-intent", {
-        cartItems,
-        shippingAddress: {
-          fullName: selectedAddress.fullName,
-          streetAddress: selectedAddress.streetAddress,
-          city: selectedAddress.city,
-          phoneNumber: selectedAddress.phoneNumber,
-        },
-      });
-      console.log(data);
-      const { error: initError } = await initPaymentSheet({
-        paymentIntentClientSecret: data.clientSecret,
-        merchantDisplayName: "admin",
-      });
-
-      if (initError) {
-        Alert.alert("Error", initError.message);
-        setPaymentLoading(false);
-        return;
-      }
-      const { error: presentError } = await presentPaymentSheet();
-      if (presentError) {
-        Alert.alert("Huỷ thanh toán", "Thanh toán đã bị huỷ");
+      if (paymentMethod === "stripe") {
+        await handleStripePayment(selectedAddress);
       } else {
-        Alert.alert("Thành công", "Thanh toán thành công", [
-          {
-            text: "OK",
-            onPress: () => {},
-          },
-        ]);
-        clearCart();
+        await handlePayOSPayment(selectedAddress);
       }
     } catch (error) {
       console.log("Payment failed", error);
+
       Alert.alert("Lỗi", "Lỗi khi thanh toán");
     } finally {
       setPaymentLoading(false);
@@ -133,17 +179,23 @@ const CartScreen = () => {
   };
 
   if (isLoading) return <LoadingUI />;
+
   if (isError) return <ErrorUI />;
+
   if (cartItems.length === 0) return <EmptyUI />;
+
   return (
     <SafeScreen>
       <Text className="px-6 pb-5 text-neutral-900 text-3xl font-bold tracking-tight">
         Giỏ hàng
       </Text>
+
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 240 }}
+        contentContainerStyle={{
+          paddingBottom: 240,
+        }}
       >
         <View className="px-6 gap-3">
           {cartItems.map((item) => (
@@ -152,14 +204,20 @@ const CartScreen = () => {
               className="bg-slate-300 rounded-3xl overflow-hidden"
             >
               <View className="p-4 flex-row">
-                {/* IMAGE */}
                 <View className="relative">
                   <Image
-                    source={{ uri: item.product.images[0] }}
-                    className=" bg-background-light"
+                    source={{
+                      uri: item.product.images[0],
+                    }}
+                    className="bg-background-light"
                     contentFit="cover"
-                    style={{ width: 112, height: 112, borderRadius: 16 }}
+                    style={{
+                      width: 112,
+                      height: 112,
+                      borderRadius: 16,
+                    }}
                   />
+
                   <View className="absolute top-2 right-2 bg-[#5E81AC] rounded-full px-2 py-0.5">
                     <Text className="text-background text-xs font-bold">
                       {item.quantity}
@@ -175,10 +233,12 @@ const CartScreen = () => {
                     >
                       {item.product.name}
                     </Text>
+
                     <View className="flex-col justify-center mt-2">
                       <Text className="text-[#5E81AC] items-center text-2xl">
                         {formatCurrency(item.product.price * item.quantity)}
                       </Text>
+
                       <Text className="text-text-secondary text-sm ml-2">
                         {formatCurrency(item.product.price)} mỗi sản phẩm
                       </Text>
@@ -246,6 +306,7 @@ const CartScreen = () => {
             </View>
           ))}
         </View>
+
         <OrderSummary
           subtotal={subtotal}
           shipping={shipping}
@@ -254,14 +315,46 @@ const CartScreen = () => {
         />
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-surface pt-4 pb-32 px-6">
+      <View className="absolute bottom-0 left-0 right-0 bg-background/95 border-t border-surface pt-4 pb-32 px-6">
+        {/* PAYMENT METHOD */}
+
+        <View className="flex-row gap-3 mb-4">
+          <TouchableOpacity
+            onPress={() => setPaymentMethod("stripe")}
+            className={`flex-1 rounded-2xl p-4 ${
+              paymentMethod === "stripe" ? "bg-blue-500" : "bg-gray-300"
+            }`}
+          >
+            <Text className="text-center text-white font-bold">Stripe</Text>
+
+            <Text className="text-center text-white text-xs mt-1">
+              Visa / Mastercard
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => setPaymentMethod("payos")}
+            className={`flex-1 rounded-2xl p-4 ${
+              paymentMethod === "payos" ? "bg-green-500" : "bg-gray-300"
+            }`}
+          >
+            <Text className="text-center text-white font-bold">PayOS</Text>
+
+            <Text className="text-center text-white text-xs mt-1">
+              QR / Banking
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View className="flex-row items-center justify-between mb-4">
           <View className="flex-row items-center">
             <Ionicons name="cart" size={20} color="#5E81AC" />
+
             <Text className="text-text-secondary ml-2">
-              {cartItemCount} {cartItemCount === 1 ? "sản phẩm" : "sản phẩm"}
+              {cartItemCount} sản phẩm
             </Text>
           </View>
+
           <View className="flex-row items-center">
             <Text className="text-text-primary font-bold text-xl">
               {formatCurrency(total)}
@@ -283,12 +376,14 @@ const CartScreen = () => {
                 <Text className="text-background font-bold text-lg mr-2">
                   Thanh toán
                 </Text>
+
                 <Ionicons name="arrow-forward" size={20} color="#121212" />
               </>
             )}
           </View>
         </TouchableOpacity>
       </View>
+
       <AddressSelectionModal
         visible={addressModalVisible}
         onClose={() => setAddressModalVisible(false)}
@@ -305,6 +400,7 @@ function LoadingUI() {
   return (
     <View className="flex-1 bg-background items-center justify-center">
       <ActivityIndicator size="large" color="#00D9FF" />
+
       <Text className="text-text-secondary mt-4">Đang tải giỏ hàng...</Text>
     </View>
   );
@@ -314,9 +410,11 @@ function ErrorUI() {
   return (
     <View className="flex-1 bg-background items-center justify-center px-6">
       <Ionicons name="alert-circle-outline" size={64} color="#FF6B6B" />
+
       <Text className="text-text-primary font-semibold text-xl mt-4">
         Không thể tải giỏ hàng
       </Text>
+
       <Text className="text-text-secondary text-center mt-2">
         Vui lòng kiểm tra kết nối và thử lại.
       </Text>
@@ -332,11 +430,14 @@ function EmptyUI() {
           Giỏ hàng
         </Text>
       </View>
+
       <View className="flex-1 items-center justify-center px-6">
         <Ionicons name="cart-outline" size={80} color="#666" />
+
         <Text className="text-neutral-900 font-semibold text-xl mt-4">
           Giỏ hàng của bạn đang trống
         </Text>
+
         <Text className="text-text-secondary text-center mt-2">
           Thêm một số sản phẩm để bắt đầu
         </Text>
