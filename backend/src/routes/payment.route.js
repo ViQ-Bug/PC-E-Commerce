@@ -10,4 +10,6 @@ const router = Router();
 router.post("/create-intent", protectRoute, createPaymentIntent);
 
 router.post("/webhook", handleWebhook);
+
+// router.post("/payos/create-link", protectRoute, createPayOSLink);
 export default router;

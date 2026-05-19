@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+// import { PayOS } from "@payos/node";
 import { ENV } from "../config/env.js";
 import { User } from "../models/user.model.js";
 import { Product } from "../models/product.model.js";
@@ -6,6 +7,11 @@ import { Order } from "../models/order.model.js";
 import { Cart } from "../models/cart.model.js";
 
 const stripe = new Stripe(ENV.STRIPE_SECRET_KEY);
+// const payos = new PayOS(
+//   ENV.PAYOS_CLIENT_ID,
+//   ENV.PAYOS_API_KEY,
+//   ENV.PAYOS_CHECKSUM_KEY,
+// );
 
 export async function createPaymentIntent(req, res) {
   try {
@@ -154,3 +160,74 @@ export async function handleWebhook(req, res) {
 
   res.json({ received: true });
 }
+// export async function createPayOSLink(req, res) {
+//   try {
+//     const { cartItems, shippingAddress } = req.body;
+//     const user = req.user; // Thừa hưởng middleware xác thực của bạn
+
+//     if (!cartItems || cartItems.length === 0) {
+//       return res.status(400).json({ error: "Cart is empty" });
+//     }
+
+//     // Bảo mật nâng cao: Tính toán lại tổng số tiền từ Server giống hệt Stripe
+//     let subtotal = 0;
+//     const validatedItems = [];
+
+//     for (const item of cartItems) {
+//       const product = await Product.findById(item.product._id);
+//       if (!product) {
+//         return res
+//           .status(404)
+//           .json({ error: `Product ${item.product.name} not found` });
+//       }
+
+//       if (product.stock < item.quantity) {
+//         return res
+//           .status(400)
+//           .json({ error: `Insufficient stock for ${product.name}` });
+//       }
+
+//       subtotal += product.price * item.quantity;
+//       validatedItems.push({
+//         name: product.name.slice(0, 20), // Tên sản phẩm rút gọn theo luật của PayOS
+//         quantity: item.quantity,
+//         price: Math.round(product.price),
+//       });
+//     }
+
+//     const shipping = 10.0;
+//     const tax = subtotal * 0.08;
+//     const total = subtotal + shipping + tax;
+
+//     if (total <= 0) {
+//       return res.status(400).json({ error: "Invalid order total" });
+//     }
+
+//     // Luật PayOS: Mã đơn hàng phải là kiểu số (Number)
+//     const orderCode = Math.floor(Math.random() * 1000000);
+//     const description = `Thanh toan don ${orderCode}`.slice(0, 25);
+
+//     const paymentBody = {
+//       orderCode: orderCode,
+//       amount: Math.round(total),
+//       description: description,
+//       items: validatedItems,
+//       returnUrl: "https://yourdomain.com/payment-success", // Điền link web/deeplink của bạn
+//       cancelUrl: "https://yourdomain.com/payment-cancel",
+//     };
+
+//     const paymentLinkResponse = await payos.createPaymentLink(paymentBody);
+
+//     return res.status(200).json({
+//       success: true,
+//       checkoutUrl: paymentLinkResponse.checkoutUrl,
+//       orderCode: orderCode,
+//     });
+//   } catch (error) {
+//     console.error("PayOS Error Backend:", error);
+//     return res.status(500).json({
+//       error: "Không thể tạo link thanh toán PayOS",
+//       details: error.message,
+//     });
+//   }
+// }
