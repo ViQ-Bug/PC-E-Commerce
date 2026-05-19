@@ -50,3 +50,10 @@ export const customerApi = {
     return data;
   },
 };
+
+export const authApi = {
+  checkAdmin: async () => {
+    const { data } = await axiosInstance.get("/admin/check-admin");
+    return data;
+  },
+};

@@ -26,6 +26,11 @@ router.get("/orders", getAllOders);
 router.patch("/orders/:orderId/status", updateOrderStatus);
 //PATHCH: update 1 field
 router.get("/customers", getAllCustomers);
-router.get("/customers/:id", deleteCustomer);
+router.delete("/customers/:id", deleteCustomer);
 router.get("/stats", getDashboardStats);
+router.get("/check-admin", protectRoute, adminOnly, (req, res) => {
+  res.json({
+    success: true,
+  });
+});
 export default router;
