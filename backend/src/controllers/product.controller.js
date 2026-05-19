@@ -19,7 +19,7 @@ export async function getProductBySearch(req, res) {
     const products = await Product.find({
       $or: [
         { title: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
+        { price: { $regex: search, $options: "i" } },
       ],
     });
     res.status(200).json(products);
